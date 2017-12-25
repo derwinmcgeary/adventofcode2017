@@ -1,0 +1,6 @@
+input = [94,84,0,79,2,27,81,1,123,93,218,23,103,255,254,243]
+
+input = [3, 4, 1, 5]
+listLength = 5
+
+for i in range(0,listLength):

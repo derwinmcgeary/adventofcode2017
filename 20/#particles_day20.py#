@@ -1,0 +1,46 @@
+particles = []
+with open ('c:/Users/derwin/AOC/20/input', 'r') as f:
+    for line in f:
+        particles.append(line.strip().split(', '))
+i = 0
+for line in particles:
+    total = 0
+    acc = line[2].split('<')[1][:-1]
+    acc = acc.split(',')
+    for v in acc:
+        total += abs(int(v))
+    if total < 1:
+        print(i,total)
+    i += 1
+
+particlelist = []
+i = 0
+
+for line in particles:
+    acc = tuple([int(q) for q in line[2].split('<')[1][:-1].split(',')])
+    pid = i
+    i += 1
+    vel = tuple([int(q) for q in line[1].split('<')[1][:-1].split(',')])
+    pos = tuple([int(q) for q in line[0].split('<')[1][:-1].split(',')])
+
+    particlelist.append({'pid': pid, 'pos': pos, 'vel' : vel, 'acc': acc})
+
+#print(particlelist)
+for i in range(0,10000):
+    collisions = []
+    seenpos = []
+    for p in particlelist:
+        newvel = tuple([p['vel'][0] + p['acc'][0],p['vel'][1] + p['acc'][1],p['vel'][2] + p['acc'][2]])
+        newpos = tuple([p['pos'][0] + newvel[0],p['pos'][1] + newvel[1],p['pos'][2] + newvel[2]])
+        p['pos'] = newpos
+        p['vel'] = newvel
+
+        if p['pos'] in seenpos:
+            # print("Adding PID", p['pid'], "to collisions")
+            collisions.append(p['pos'])
+        else:
+            seenpos.append(p['pos'])
+    #print(particlelist)
+    particlelist[:] = [x for x in particlelist if x['pos'] not in collisions]
+    #print(particlelist)
+    print(len(particlelist), "Particles left")
